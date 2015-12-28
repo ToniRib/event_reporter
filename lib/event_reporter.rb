@@ -83,7 +83,7 @@ if __FILE__ == $0
       event_reporter.find(options)
       puts "Queue loaded with #{event_reporter.queue.count} matching records"
     elsif command == 'queue print'
-      # event_reporter.print
+      puts event_reporter.print
     elsif command == 'help'
       puts "\nThe following commands are available:"
       puts event_reporter.valid_commands.keys
