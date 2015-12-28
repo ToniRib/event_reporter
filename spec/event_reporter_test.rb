@@ -22,4 +22,14 @@ class EventReporterTest < Minitest::Test
     @er.clear_queue
     assert_equal 0, @er.queue.count
   end
+
+  # Emptiness section
+  def test_cannot_find_info_with_no_loaded_data
+    er = EventReporter.new
+
+    er.find(last_name: 'Johnson')
+
+    assert_equal 0, @er.queue.count
+    @er.clear_queue
+  end
 end
