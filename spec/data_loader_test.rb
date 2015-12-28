@@ -4,7 +4,7 @@ require 'minitest/pride'
 
 class DataLoaderTest < Minitest::Test
   def test_loads_the_event_attendees
-    file = './data/event_attendees.csv'
+    file = 'event_attendees.csv'
     data = CSV.readlines(file, headers: true, header_converters: :symbol)
     loader = DataLoader.new
 

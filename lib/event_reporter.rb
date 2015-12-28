@@ -6,15 +6,16 @@ class EventReporter
   attr_reader :data, :queue
 
   def valid_commands
-    { 'load <filename>' => "Erase any loaded data and parse the specified file. If no filename is  given, default to event_attendees.csv.",
-      'help' => "Output a listing of the available individual commands.",
-      'help <command>' => "Output a description of how to use the specific command.",
-      'queue count' => "Output how many records are in the current queue.",
-      'queue clear' => "Empty the queue.",
-      'queue print' => "Print out a tab-delimited data table with headers.",
-      'queue print by <attribute>' => "Print the data table sorted by the specified attribute.",
-      'queue save to <filename.csv>' => "Export the current queue to the specified filename as a CSV.",
-      'find <attribute> <criteria>' => "Load the queue with all records matching the criteria for the given attribute."
+    {
+      'load <filename>' => "Erases any loaded data and parses the specified file. If no filename is  given, default is event_attendees.csv.",
+      'help' => "Outputs a listing of available commands.",
+      'help <command>' => "Outputs a description of how to use the specific command.",
+      'queue count' => "Outputs how many records are in the current queue.",
+      'queue clear' => "Empties the queue.",
+      'queue print' => "Prints out a tab-delimited data table with headers.",
+      'queue print by <attribute>' => "Prints the data table sorted by the specified attribute.",
+      'queue save to <filename.csv>' => "Exports the current queue to the specified filename as a CSV.",
+      'find <attribute> <criteria>' => "Loads the queue with all records matching the criteria for the given attribute."
     }
   end
 
@@ -58,9 +59,11 @@ if __FILE__ == $0
     puts "\nPlease enter a command:"
     command = gets.chomp
 
+    break if command == 'exit'
+
     if command.start_with?('load')
       if command.split.count == 1
-        filename = './data/event_attendees.csv'
+        filename = 'event_attendees.csv'
       else
         filename = command.split.last
       end
@@ -96,4 +99,5 @@ if __FILE__ == $0
     end
   end
 
+  puts "Exiting Event Reporter"
 end

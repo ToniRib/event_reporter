@@ -5,7 +5,7 @@ require 'minitest/pride'
 class EventReporterTest < Minitest::Test
   def setup
     @er = EventReporter.new
-    file = './data/event_attendees.csv'
+    file = 'event_attendees.csv'
     @er.load(file)
   end
 
