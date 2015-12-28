@@ -48,6 +48,10 @@ class EventReporter
   def print
     @queue.print
   end
+
+  def print_by(attribute)
+    @queue.print_by(attribute.to_sym)
+  end
 end
 
 if __FILE__ == $0
@@ -82,8 +86,13 @@ if __FILE__ == $0
 
       event_reporter.find(options)
       puts "Queue loaded with #{event_reporter.queue.count} matching records"
-    elsif command == 'queue print'
-      puts event_reporter.print
+    elsif command.start_with?('queue print')
+      if command.include?('by')
+        attribute = command[15..-1]
+        puts event_reporter.print_by(attribute)
+      else
+        puts event_reporter.print
+      end
     elsif command == 'help'
       puts "\nThe following commands are available:"
       puts event_reporter.valid_commands.keys
