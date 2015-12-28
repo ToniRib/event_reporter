@@ -3,10 +3,22 @@ require_relative 'queue'
 require 'pry'
 
 class EventReporter
-  attr_reader :data, :queue, :data_loader
+  attr_reader :data, :queue
+
+  def valid_commands
+    { 'load <filename>' => "Erase any loaded data and parse the specified file. If no filename is  given, default to event_attendees.csv.",
+      'help' => "Output a listing of the available individual commands.",
+      'help <command>' => "Output a description of how to use the specific command.",
+      'queue count' => "Output how many records are in the current queue.",
+      'queue clear' => "Empty the queue.",
+      'queue print' => "Print out a tab-delimited data table with headers.",
+      'queue print by <attribute>' => "Print the data table sorted by the specified attribute.",
+      'queue save to <filename.csv>' => "Export the current queue to the specified filename as a CSV.",
+      'find <attribute> <criteria>' => "Load the queue with all records matching the criteria for the given attribute."
+    }
+  end
 
   def initialize
-    @data_loader = DataLoader.new
     @queue = Queue.new
   end
 
@@ -25,11 +37,15 @@ class EventReporter
   end
 
   def load(file)
-    @data = @data_loader.load(file)
+    @data = DataLoader.new.load(file)
   end
 
   def clear_queue
     @queue.clear
+  end
+
+  def print
+    @queue.print
   end
 end
 
@@ -63,6 +79,20 @@ if __FILE__ == $0
 
       event_reporter.find(options)
       puts "Queue loaded with #{event_reporter.queue.count} matching records"
+    elsif command == 'queue print'
+      # event_reporter.print
+    elsif command == 'help'
+      puts "\nThe following commands are available:"
+      puts event_reporter.valid_commands.keys
+    elsif command.start_with?('help')
+      function = command[5..-1]
+
+      if event_reporter.valid_commands.keys.include?(function)
+        puts "\nThe function #{function} does the following:"
+        puts event_reporter.valid_commands[function]
+      else
+        puts "\nThe function #{function} is not a recognized function"
+      end
     end
   end
 

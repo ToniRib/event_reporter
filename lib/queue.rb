@@ -14,4 +14,8 @@ class Queue
     @results = data
     @count = data.count
   end
+
+  def headers
+    ["LAST NAME", "FIRST NAME", "EMAIL", "ZIPCODE", "CITY", "STATE", "ADDRESS", "PHONE"].join("\t")
+  end
 end
