@@ -16,18 +16,16 @@ class Queue
   end
 
   def print
-    rows = @results.map do |r|
-      [r[:last_name], r[:first_name], r[:email_address], r[:zipcode], r[:city],
-       r[:state], r[:street], r[:homephone]].join("\t")
-    end
-    table = self.headers + "\n"
-    rows.each { |r| table += r + "\n" }
-    table
+    create_table(@results)
   end
 
   def print_by(attribute)
     sorted = results.sort_by { |r| r[attribute] }
-    rows = sorted.map do |r|
+    create_table(sorted)
+  end
+
+  def create_table(data)
+    rows = data.map do |r|
       [r[:last_name], r[:first_name], r[:email_address], r[:zipcode], r[:city],
        r[:state], r[:street], r[:homephone]].join("\t")
     end
