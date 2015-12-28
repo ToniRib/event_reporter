@@ -16,11 +16,15 @@ class EventReporter
     matcher = /\A\s*#{criteria}\s*\z/i
 
     results = @data.find_all { |row| row[attribute] =~ matcher }
-    @queue.count = results.count
+    @queue.update_count(results.count)
     results
   end
 
   def load(file)
     @data = @data_loader.load(file)
+  end
+
+  def clear_queue
+    @queue.clear
   end
 end

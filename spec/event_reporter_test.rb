@@ -3,13 +3,24 @@ require 'minitest/autorun'
 require 'minitest/pride'
 
 class EventReporterTest < Minitest::Test
-  def test_finds_all_entries_with_first_name_john
-    er = EventReporter.new
+  def setup
+    @er = EventReporter.new
     file = './data/event_attendees.csv'
-    er.load(file)
+    @er.load(file)
+  end
 
-    er.find(first_name: 'John')
+  def test_finds_all_entries_with_first_name_john
+    @er.find(first_name: 'John')
 
-    assert_equal 63, er.queue.count
+    assert_equal 63, @er.queue.count
+  end
+
+  def test_clear_resets_queue_count_to_zero
+    @er.find(first_name: 'John')
+    assert_equal 63, @er.queue.count
+
+    @er.clear_queue
+
+    assert_equal 0, @er.queue.count
   end
 end
