@@ -11,12 +11,14 @@ class QueueTest < Minitest::Test
 
   def test_clear_resets_queue_count_back_to_zero
     q = Queue.new
-    q.update_count(10)
+    results = [1, 2, 3]
 
-    assert_equal 10, q.count
+    q.update_results(results)
+    assert_equal 3, q.count
+    assert_equal results, q.results
 
     q.clear
-
     assert_equal 0, q.count
+    assert_nil q.results
   end
 end

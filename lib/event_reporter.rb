@@ -12,12 +12,15 @@ class EventReporter
 
   def find(options)
     attribute = options.keys.first
-    criteria = options.values.first
-    matcher = /\A\s*#{criteria}\s*\z/i
+    matcher = generate_matcher(options.values.first)
 
     results = @data.find_all { |row| row[attribute] =~ matcher }
-    @queue.update_count(results.count)
-    results
+
+    @queue.update_results(results)
+  end
+
+  def generate_matcher(criteria)
+    /\A\s*#{criteria}\s*\z/i
   end
 
   def load(file)

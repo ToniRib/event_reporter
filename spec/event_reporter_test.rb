@@ -15,12 +15,11 @@ class EventReporterTest < Minitest::Test
     assert_equal 63, @er.queue.count
   end
 
-  def test_clear_resets_queue_count_to_zero
+  def test_clear_queue_resets_queue_count_to_zero
     @er.find(first_name: 'John')
     assert_equal 63, @er.queue.count
 
     @er.clear_queue
-
     assert_equal 0, @er.queue.count
   end
 end
