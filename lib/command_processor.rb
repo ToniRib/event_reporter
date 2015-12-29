@@ -32,7 +32,7 @@ class CommandProcessor
 
   def determine_help_response(command)
     if command.length > 4
-      all_commands[command[5..-1]]
+      response_prompt(all_commands[command[5..-1]])
     else
       build_string_of_all_commands
     end
@@ -44,10 +44,8 @@ class CommandProcessor
 
   def build_string_of_all_commands
     command_str = ""
-    all_commands.each do |k, v|
-      command_str += "#{k}  --\t#{v}\n"
-    end
-    command_str
+    all_commands.each { |k, v| command_str += "#{k}  --\t#{v}\n" }
+    response_prompt("Available Commands:\n") + command_str
   end
 
   def all_commands
