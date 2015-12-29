@@ -62,8 +62,12 @@ class CommandProcessor
       find(attribute.to_sym, criteria)
       response_prompt("#{queue.count} items loaded into the queue")
     when 'queue print'
+      return response_prompt("No data to print") if data.nil?
+      
       response_prompt("All Records in Queue:\n") + queue.print
     when /queue print by/
+      return response_prompt("No data to print") if data.nil?
+
       attribute = command[15..-1]
       response_prompt("All Records in Queue Sorted By #{attribute}:\n") + queue.print_by(attribute.to_sym)
     when /queue save to/

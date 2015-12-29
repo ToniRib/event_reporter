@@ -25,11 +25,14 @@ class Queue
   end
 
   def save(filename)
-    table = create_table(results)
-    csv_table = table.gsub(/\t/, ',')
-    File.open(filename, 'w') do |f|
-      f.write(csv_table)
+    if results.nil?
+      csv_table = table_headers
+    else
+      table = create_table(results)
+      csv_table = table.gsub(/\t/, ',')
     end
+
+    File.open(filename, 'w') { |f| f.write(csv_table) }
   end
 
   def create_table(data)
