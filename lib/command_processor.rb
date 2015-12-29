@@ -60,6 +60,11 @@ class CommandProcessor
       attribute, criteria = command.split[1..2]
       find(attribute.to_sym, criteria)
       response_prompt("#{queue.count} items loaded into the queue")
+    when 'queue print'
+      response_prompt("All Records in Queue:\n") + queue.print
+    when /queue print by/
+      attribute = command[15..-1]
+      response_prompt("All Records in Queue Sorted By #{attribute}:\n") + queue.print_by(attribute.to_sym)
     end
   end
 
