@@ -24,6 +24,12 @@ class Queue
     create_table(sorted)
   end
 
+  def save(filename)
+    File.open(filename, 'w') do |f|
+      f.write(create_table(results))
+    end
+  end
+
   def create_table(data)
     rows = data.map { |r| generate_clean_data_string(r) }
     table = table_headers + "\n"

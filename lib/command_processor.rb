@@ -57,7 +57,8 @@ class CommandProcessor
       queue.clear
       response_prompt("Queue has been cleared")
     when /find/
-      attribute, criteria = command.split[1..2]
+      attribute = command.split[1]
+      criteria = command.split[2..-1].join(' ')
       find(attribute.to_sym, criteria)
       response_prompt("#{queue.count} items loaded into the queue")
     when 'queue print'
@@ -65,6 +66,10 @@ class CommandProcessor
     when /queue print by/
       attribute = command[15..-1]
       response_prompt("All Records in Queue Sorted By #{attribute}:\n") + queue.print_by(attribute.to_sym)
+    when /queue save to/
+      filename = command[14..-1]
+      queue.save(filename)
+      response_prompt("Queue data saved to #{filename}")
     end
   end
 
