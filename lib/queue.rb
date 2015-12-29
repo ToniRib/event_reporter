@@ -25,8 +25,10 @@ class Queue
   end
 
   def save(filename)
+    table = create_table(results)
+    csv_table = table.gsub(/\t/, ',')
     File.open(filename, 'w') do |f|
-      f.write(create_table(results))
+      f.write(csv_table)
     end
   end
 
