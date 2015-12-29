@@ -1,8 +1,13 @@
 require 'pry'
 require_relative 'file_reader'
+require_relative 'queue'
 
 class CommandProcessor
-  attr_reader :data
+  attr_reader :data, :queue
+
+  def initialize
+    @queue = Queue.new
+  end
 
   def generate_response(command)
     if load_file?(command)
@@ -11,6 +16,8 @@ class CommandProcessor
       response_prompt("Loaded data from #{file}")
     elsif help?(command)
       determine_help_response(command)
+    elsif queue_or_find?(command)
+      determine_queue_response(command)
     end
   end
 
@@ -20,6 +27,10 @@ class CommandProcessor
 
   def load_file?(command)
     command.start_with?('load')
+  end
+
+  def queue_or_find?(command)
+    command.start_with?('queue') || command.start_with?('find')
   end
 
   def determine_file(command)
@@ -36,6 +47,33 @@ class CommandProcessor
     else
       build_string_of_all_commands
     end
+  end
+
+  def determine_queue_response(command)
+    case command
+    when 'queue count'
+      response_prompt(queue.count)
+    when 'queue clear'
+      queue.clear
+      response_prompt("Queue has been cleared")
+    when /find/
+      attribute, criteria = command.split[1..2]
+      find(attribute.to_sym, criteria)
+      response_prompt("#{queue.count} items loaded into the queue")
+    end
+  end
+
+  def find(attribute, criteria)
+    return if @data.nil?
+
+    matcher = generate_matcher(criteria)
+
+    results = @data.find_all { |row| row[attribute] =~ matcher }
+    @queue.update_results(results)
+  end
+
+  def generate_matcher(criteria)
+    /\A\s*#{criteria}\s*\z/i
   end
 
   def response_prompt(response)
